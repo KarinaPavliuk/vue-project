@@ -1,16 +1,8 @@
 <template>
-  <form method="post">
-    <h2>Registration form</h2>
-    <p>
-      <label for="name">Your name:</label>
-      <input id="name" type="text" value="" />
-    </p>
-    <p>
-      <label for="mail">Your E-mail:</label>
-      <input id="mail" type="text" value="" />
-    </p>
-    <button type="button" name="button">Register</button>
-  </form>
+  <div class="header">
+    <h1>Header</h1>
+    <button type="button">Create</button>
+  </div>
 </template>
 
 <script>
@@ -21,4 +13,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(
+    90deg,
+    rgba(131, 0, 212, 1) 0%,
+    rgba(0, 221, 99, 1) 100%
+  );
+  height: 72px;
+  color: white;
+}
+</style>
