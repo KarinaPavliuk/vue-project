@@ -1,33 +1,67 @@
 <template>
   <div class="homePage">
-    <h2>Home</h2>
-    <input type="text" />
-    <p>Filter</p>
+    <input v-model="query" @keyup.enter="searchProducts(query)" type="text" />
+
+    <div>
+      <label for="sort-select">Sort:</label>
+      <select
+        v-model="option"
+        @change="sort(option)"
+        name="sort"
+        id="sort-select"
+      >
+        <option value="title">Sort by title</option>
+        <option value="rating">Sort by rating</option>
+      </select>
+    </div>
+
     <ul>
-      <li>Product</li>
-      <li>Product</li>
-      <li>Product</li>
+      <li v-for="product in products">
+        <img :src="product.thumbnail" alt="" />
+        <p>{{ product.title }}</p>
+        <p>{{ product.rating }}</p>
+        <p>{{ product.price }}</p>
+      </li>
     </ul>
-    {{ info }}
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
-      info: null,
+      products: null,
     };
   },
-  methods: {},
+  methods: {
+    getPosts() {
+      fetch("https://dummyjson.com/products")
+        .then((res) => res.json())
+        .then((data) => (this.products = data.products));
+    },
+    searchProducts(productName) {
+      fetch(`https://dummyjson.com/products/search?q=${productName}`)
+        .then((res) => res.json())
+        .then((data) => (this.products = data.products));
+    },
+    sort(option) {
+      if (option === "title") {
+        return this.products.sort((a, b) =>
+          a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+        );
+      } else if (option === "rating") {
+        return this.products.sort((a, b) => b.rating - a.rating);
+      }
+    },
+  },
   mounted() {
-    axios
-      .get("https://dummyjson.com/products")
-      .then((response) => (this.info = response));
+    this.getPosts();
   },
 };
 </script>
 
-<style></style>
+<style>
+img {
+  height: 50px;
+}
+</style>
