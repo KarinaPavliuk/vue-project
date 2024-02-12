@@ -20,8 +20,8 @@ export default {
   justify-content: space-between;
   background: linear-gradient(
     90deg,
-    rgba(131, 0, 212, 1) 0%,
-    rgba(0, 221, 99, 1) 100%
+    rgb(222 189 243) 0%,
+    rgb(149 255 197) 100%
   );
   height: 72px;
   color: white;

@@ -16,7 +16,7 @@
     </div>
 
     <ul>
-      <li v-for="product in products">
+      <li v-for="product in products" @click="openProductPage(product.id)">
         <img :src="product.thumbnail" alt="" />
         <p>{{ product.title }}</p>
         <p>{{ product.rating }}</p>
@@ -30,7 +30,10 @@
 export default {
   data() {
     return {
+      query: "",
+      option: null,
       products: null,
+      productId: 1,
     };
   },
   methods: {
@@ -53,6 +56,12 @@ export default {
         return this.products.sort((a, b) => b.rating - a.rating);
       }
     },
+    openProductPage: function (productId) {
+      console.log("id", productId);
+      this.productId = productId;
+      console.log("this.id", this.productId);
+      this.$emit("clickOnproduct", this.productId);
+    },
   },
   mounted() {
     this.getPosts();
@@ -60,7 +69,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 img {
   height: 50px;
 }

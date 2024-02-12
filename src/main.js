@@ -7,6 +7,8 @@ import App from "./App";
 
 Vue.config.productionTip = false;
 
+export const bus = new Vue();
+
 //Vue.component("List", List); // імпортуєм компонент глобально
 
 /* eslint-disable no-new */

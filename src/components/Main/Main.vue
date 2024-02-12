@@ -5,7 +5,14 @@
     <button type="button" @click="component = 'CreateProductPage'">
       Create
     </button>
-    <keep-alive><component :is="component"></component></keep-alive>
+    <keep-alive
+      ><component
+        :is="component"
+        @clickOnproduct="getProductId"
+        v-bind:productId="productId"
+      ></component
+    ></keep-alive>
+
     <!-- <button type="button" @click="component = 'Reg'">Reg</button>
     <button type="button" @click="component = 'Aut'">Aut</button>
     <keep-alive><component :is="component"></component></keep-alive> -->
@@ -15,9 +22,9 @@
 <script>
 // import Aut from "./components/Aut.vue";// імпортуєм компонент локально
 // import Reg from "./components/Reg.vue";
-import HomePage from "./HomePage.vue";
-import ProductPage from "./ProductPage.vue";
-import CreateProductPage from "./CreateProductPage.vue";
+import HomePage from "./HomePage/HomePage.vue";
+import ProductPage from "./ProductPage/ProductPage.vue";
+import CreateProductPage from "./CreateProductPage/CreateProductPage.vue";
 
 export default {
   components: {
@@ -28,8 +35,14 @@ export default {
   data() {
     return {
       component: "HomePage",
-      // component: "Aut",
+      productId: 1,
     };
+  },
+  methods: {
+    getProductId: function (productId) {
+      console.log("main id", productId);
+      this.productId = productId;
+    },
   },
 };
 </script>

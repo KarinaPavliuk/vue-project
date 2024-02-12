@@ -12,8 +12,8 @@
 <script>
 // import Aut from "./components/Aut.vue";// імпортуєм компонент локально
 // import Reg from "./components/Reg.vue";
-import Header from "./components/Header.vue";
-import Main from "./components/Main.vue";
+import Header from "./components/Header/Header";
+import Main from "./components/Main/Main.vue";
 
 export default {
   components: {
