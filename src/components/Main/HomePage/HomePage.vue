@@ -16,7 +16,11 @@
     </div>
 
     <ul>
-      <li v-for="product in products" @click="openProductPage(product.id)">
+      <li
+        v-for="product in products"
+        @click="openProductPage(product.id)"
+        :key="product.id"
+      >
         <img :src="product.thumbnail" alt="" />
         <p>{{ product.title }}</p>
         <p>{{ product.rating }}</p>
@@ -27,25 +31,38 @@
 </template>
 
 <script>
+import { bus } from "../../../main.js";
+
 export default {
+  props: {
+    // deletedId: {
+    //   type: Array,
+    //   required: false,
+    //   default: [],
+    // },
+  },
   data() {
     return {
       query: "",
       option: null,
       products: null,
       productId: 1,
+      deletedId: null,
     };
   },
   methods: {
     getPosts() {
       fetch("https://dummyjson.com/products")
         .then((res) => res.json())
-        .then((data) => (this.products = data.products));
+        .then(
+          (data) => (this.products = data.products)
+          //(this.products = this.filterProducts(this.deletedId, data.products))
+        );
     },
     searchProducts(productName) {
       fetch(`https://dummyjson.com/products/search?q=${productName}`)
         .then((res) => res.json())
-        .then((data) => (this.products = data.products));
+        .then((this.products = data.products));
     },
     sort(option) {
       if (option === "title") {
@@ -57,15 +74,26 @@ export default {
       }
     },
     openProductPage: function (productId) {
-      console.log("id", productId);
       this.productId = productId;
-      console.log("this.id", this.productId);
-      this.$emit("clickOnproduct", this.productId);
+      this.$emit("clickOnProduct", productId);
+      bus.$emit("clickOnProduct", this.productId);
     },
+    filterProducts: function (id) {
+      this.products = this.products.filter((product) => product.id !== id);
+    },
+  },
+  created() {
+    bus.$on("deleteProduct", (data) => {
+      // this.deletedId = data;
+      this.filterProducts(data);
+    });
   },
   mounted() {
     this.getPosts();
   },
+  // updated() {
+  //   this.getPosts();
+  // },
 };
 </script>
 

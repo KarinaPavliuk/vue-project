@@ -8,8 +8,10 @@
     <keep-alive
       ><component
         :is="component"
-        @clickOnproduct="getProductId"
+        @clickOnProduct="getProductId"
+        @deleteProduct="getUpdatedProductsList"
         v-bind:productId="productId"
+        v-bind:deletedId="deletedProductsId"
       ></component
     ></keep-alive>
 
@@ -36,12 +38,19 @@ export default {
     return {
       component: "HomePage",
       productId: 1,
+      deletedProductsId: [],
     };
   },
   methods: {
     getProductId: function (productId) {
-      console.log("main id", productId);
       this.productId = productId;
+      this.component = "ProductPage";
+    },
+    getUpdatedProductsList: function (productId) {
+      console.log("deleted id", productId);
+      this.deletedProductsId.push(productId);
+      console.log("deleted", this.deletedProductsId);
+      this.component = "HomePage";
     },
   },
 };
