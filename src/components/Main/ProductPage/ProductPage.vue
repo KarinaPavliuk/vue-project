@@ -1,33 +1,30 @@
 <template>
-  <div class="productPage">
-    <h2>Product Page</h2>
-    <div v-if="product">
+  <div class="product-page">
+    <div class="product-info" v-if="product">
       <img :src="product.images[0]" alt="" />
-      <p>{{ product.id }}</p>
-      <p>{{ product.title }}</p>
-      <p>Brand: {{ product.brand }}</p>
-      <p>{{ product.description }}</p>
-      <p>Rating: {{ product.rating }}</p>
-      <p>Price: {{ product.price }} $</p>
+      <p><span>Title:</span> {{ product.title }}</p>
+      <p><span>Brand:</span> {{ product.brand }}</p>
+      <p><span>Description:</span> {{ product.description }}</p>
+      <p><span>Rating:</span> {{ product.rating }}</p>
+      <p><span>Price:</span> {{ product.price }} $</p>
     </div>
-    <button>Update product</button>
+    <button @click="showModal">Update product</button>
     <button @click="handleDeleteClick(product.id)">Delete product</button>
+    <ModalPage v-show="isModalVisible" @close="closeModal"></ModalPage>
   </div>
 </template>
 
 <script>
 import { bus } from "../../../main.js";
+import ModalPage from "./ModalPage.vue";
 
 export default {
-  // props: {
-  //   productId: {
-  //     type: Number,
-  //     required: false,
-  //     default: 1,
-  //   },
-  // },
   data() {
-    return { product: null, productId: null };
+    return {
+      product: null,
+      productId: 1,
+      isModalVisible: false,
+    };
   },
   methods: {
     getSingleProduct(id) {
@@ -39,21 +36,47 @@ export default {
       this.$emit("deleteProduct", id);
       bus.$emit("deleteProduct", id);
     },
+    showModal() {
+      this.isModalVisible = true;
+      bus.$emit("product", this.product);
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
   },
   created() {
     bus.$on("clickOnProduct", (data) => (this.productId = data));
+    bus.$on("close", () => (this.isModalVisible = false));
   },
   mounted() {
     this.productId && this.getSingleProduct(this.productId);
   },
-  // updated() {
-  //   this.getSingleProduct(this.productId);
-  // },
+  components: { ModalPage },
 };
 </script>
 
 <style scoped>
 img {
   height: 200px;
+}
+span {
+  font-weight: 600;
+  background-color: rgb(222 189 243);
+  padding: 2px;
+  border-radius: 8px;
+}
+button {
+  margin-bottom: auto;
+}
+.product-page {
+  display: flex;
+  column-gap: 24px;
+}
+.product-info {
+  padding: 28px;
+  border: 2px solid #8a878c;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
 }
 </style>

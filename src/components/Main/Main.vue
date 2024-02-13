@@ -1,29 +1,33 @@
 <template>
   <div class="main">
-    <button type="button" @click="component = 'HomePage'">Home</button>
-    <button type="button" @click="component = 'ProductPage'">Product</button>
-    <button type="button" @click="component = 'CreateProductPage'">
-      Create
-    </button>
-    <keep-alive
-      ><component
-        :is="component"
-        @clickOnProduct="getProductId"
-        @deleteProduct="getUpdatedProductsList"
-        v-bind:productId="productId"
-        v-bind:deletedId="deletedProductsId"
-      ></component
-    ></keep-alive>
-
-    <!-- <button type="button" @click="component = 'Reg'">Reg</button>
-    <button type="button" @click="component = 'Aut'">Aut</button>
-    <keep-alive><component :is="component"></component></keep-alive> -->
+    <div class="container">
+      <button class="button" type="button" @click="component = 'HomePage'">
+        Home
+      </button>
+      <button class="button" type="button" @click="component = 'ProductPage'">
+        Product
+      </button>
+      <button
+        class="button"
+        type="button"
+        @click="component = 'CreateProductPage'"
+      >
+        Create
+      </button>
+      <keep-alive
+        ><component
+          :is="component"
+          @deleteProduct="getUpdatedProductsList"
+          v-bind:productId="productId"
+          v-bind:deletedId="deletedProductsId"
+        ></component
+      ></keep-alive>
+    </div>
   </div>
 </template>
 
 <script>
-// import Aut from "./components/Aut.vue";// імпортуєм компонент локально
-// import Reg from "./components/Reg.vue";
+import { bus } from "../../main";
 import HomePage from "./HomePage/HomePage.vue";
 import ProductPage from "./ProductPage/ProductPage.vue";
 import CreateProductPage from "./CreateProductPage/CreateProductPage.vue";
@@ -47,13 +51,31 @@ export default {
       this.component = "ProductPage";
     },
     getUpdatedProductsList: function (productId) {
-      console.log("deleted id", productId);
       this.deletedProductsId.push(productId);
-      console.log("deleted", this.deletedProductsId);
       this.component = "HomePage";
     },
+  },
+  created() {
+    bus.$on("clickOnProduct", () => {
+      this.component = "ProductPage";
+    });
+    bus.$on("headerClick", () => {
+      this.component = "HomePage";
+    });
+    bus.$on("createClick", () => {
+      this.component = "CreateProductPage";
+    });
+    bus.$on("createProduct", () => {
+      this.component = "HomePage";
+    });
   },
 };
 </script>
 
-<style></style>
+<style>
+.button {
+  background-color: rgb(239, 237, 237);
+  margin-bottom: 10px;
+  box-shadow: none;
+}
+</style>

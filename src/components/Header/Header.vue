@@ -1,20 +1,36 @@
 <template>
-  <div class="header">
-    <h1>Header</h1>
-    <button type="button">Create</button>
-  </div>
+  <header class="header">
+    <div class="header-container container">
+      <h1 class="heading" @click="handleHeadingClick">Products</h1>
+
+      <button type="button" @click="hangleCreateClick">Create</button>
+    </div>
+  </header>
 </template>
 
 <script>
+import { bus } from "../../main";
+
 export default {
   data() {
     return {};
+  },
+  methods: {
+    handleHeadingClick() {
+      bus.$emit("headerClick");
+    },
+    hangleCreateClick() {
+      bus.$emit("createClick");
+    },
   },
 };
 </script>
 
 <style>
 .header {
+  margin-bottom: 10px;
+}
+.header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,5 +41,10 @@ export default {
   );
   height: 72px;
   color: white;
+}
+
+.heading {
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 </style>
